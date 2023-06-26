@@ -11,7 +11,7 @@ app.use(express.json())
 let usuarios = [];
 const tweets = [];
 
-// Criar usuário
+//POST - Criar usuário
 app.post("/sign-up", (request, response) => {
     const novoUsuário =
     {
@@ -44,6 +44,17 @@ app.post("/tweets", (request, response) => {
     tweets.push(posttweet)
     response.status(201).send("OK")
 })
+
+//GET - Tweets já criados
+app.get("/tweets", (request, response) => {
+    if (tweets.length > 10) {
+        const ultimosTweets = tweets.slice(-10)
+        response.send(ultimosTweets)
+    }
+    else {
+        response.send(tweets)
+    }
+});
 
 //Porta
 const porta = process.env.PORT || 5000;
