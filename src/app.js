@@ -18,9 +18,12 @@ app.post("/sign-up", (request, response) => {
         username: request.body.username,
         avatar: request.body.avatar
     }
-
-    usuarios.push(novoUsuário)
-    response.status(201).send("OK")
+    if (!novoUsuário.username || typeof novoUsuário.username !== "string" || !novoUsuário.avatar || typeof novoUsuário.avatar !== "string") {
+        return response.status(400).send("Todos os campos são obrigatórios")
+    } else {
+        usuarios.push(novoUsuário)
+        response.status(201).send("OK")
+    }
 })
 
 //POST - Criando tweets
@@ -30,10 +33,6 @@ app.post("/tweets", (request, response) => {
     const TemConta = usuarios.find(u => u.username === request.body.username)
     const foto = usuarios.find(user => user.username === request.body.username)
 
-    if (!TemConta) {
-        response.status(401).send("UNAUTHORIZED")
-    }
-
     const posttweet =
     {
         username: request.body.username,
@@ -41,8 +40,17 @@ app.post("/tweets", (request, response) => {
         tweet: request.body.tweet
     }
 
-    tweets.push(posttweet)
-    response.status(201).send("OK")
+    if (!TemConta) {
+        return response.status(401).send("UNAUTHORIZED")
+    }
+
+    else if(!posttweet.username || typeof posttweet.username !== "string" || !posttweet.tweet || typeof posttweet.tweet !== "string") {
+        return response.status(400).send("Todos os campos são obrigatórios")
+    }
+    else {
+        tweets.push(posttweet)
+        response.status(201).send("OK")
+    }
 })
 
 //GET - Tweets já criados
