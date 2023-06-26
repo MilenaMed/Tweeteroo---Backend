@@ -56,6 +56,15 @@ app.get("/tweets", (request, response) => {
     }
 });
 
+//GET - Tweets por usuário
+app.get("/tweets/:username", (request, response) => {
+    const { nomeUsuário } = request.params
+    const tweetsUsuário = tweets.filter((t) => t.username === nomeUsuário)
+    response.send(tweetsUsuário)
+
+});
+
+
 //Porta
 const porta = process.env.PORT || 5000;
 app.listen(porta, () => console.log(`Servidor rodando na porta ${porta}`));
