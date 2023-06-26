@@ -7,7 +7,11 @@ const app = express();
 app.use(cors())
 app.use(express.json())
 
-// POST - Criar usuário
+//Globais
+let usuarios = [];
+const tweets = [];
+
+// Criar usuário
 app.post("/sign-up", (request, response) => {
     const novoUsuário =
     {
@@ -19,5 +23,28 @@ app.post("/sign-up", (request, response) => {
     response.status(201).send("OK")
 })
 
+//POST - Criando tweets
+app.post("/tweets", (request, response) => {
+
+    //Checando se tem conta
+    const TemConta = usuarios.find(u => u.username === request.body.username)
+    const foto = usuarios.find(user => user.username === request.body.username)
+
+    if (!TemConta) {
+        response.status(401).send("UNAUTHORIZED")
+    }
+
+    const posttweet =
+    {
+        username: request.body.username,
+        avatar: foto.avatar,
+        tweet: request.body.tweet
+    }
+
+    tweets.push(posttweet)
+    response.status(201).send("OK")
+})
+
+//Porta
 const porta = process.env.PORT || 5000;
 app.listen(porta, () => console.log(`Servidor rodando na porta ${porta}`));
