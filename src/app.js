@@ -16,7 +16,7 @@ app.post("/sign-up", (request, response) => {
     }
 
     usuarios.push(novoUsuário)
-    response.send("OK")
+    response.status(201).send("OK")
 })
 
 const porta = process.env.PORT || 5000;
